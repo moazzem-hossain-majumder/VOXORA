@@ -151,6 +151,7 @@ ALTER TABLE public.daily_challenges ENABLE ROW LEVEL SECURITY;
 -- Profiles: Users can only read/update their own profile
 CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "Users can insert own profile" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
 
 -- Conversations: Users can read/write their own conversations
 CREATE POLICY "Users can manage own conversations" ON public.conversations FOR ALL USING (auth.uid() = user_id);
@@ -177,3 +178,11 @@ CREATE POLICY "Users can manage own memory" ON public.learning_memory FOR ALL US
 
 -- Daily Challenges: Users can manage own daily challenges
 CREATE POLICY "Users can manage own daily challenges" ON public.daily_challenges FOR ALL USING (auth.uid() = user_id);
+
+-- ==============================================================================
+-- GRANT PERMISSIONS TO SUPABASE ROLES
+-- ==============================================================================
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO anon, authenticated;
