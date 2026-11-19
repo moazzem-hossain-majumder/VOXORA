@@ -149,34 +149,47 @@ ALTER TABLE public.learning_memory ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.daily_challenges ENABLE ROW LEVEL SECURITY;
 
 -- Profiles: Users can only read/update their own profile
+DROP POLICY IF EXISTS "Users can view own profile" ON public.profiles;
 CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
+
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
+
+DROP POLICY IF EXISTS "Users can insert own profile" ON public.profiles;
 CREATE POLICY "Users can insert own profile" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
 
 -- Conversations: Users can read/write their own conversations
+DROP POLICY IF EXISTS "Users can manage own conversations" ON public.conversations;
 CREATE POLICY "Users can manage own conversations" ON public.conversations FOR ALL USING (auth.uid() = user_id);
 
 -- Messages: Users can manage messages in their conversations
+DROP POLICY IF EXISTS "Users can manage messages" ON public.conversation_messages;
 CREATE POLICY "Users can manage messages" ON public.conversation_messages FOR ALL USING (
   EXISTS (SELECT 1 FROM public.conversations WHERE id = conversation_messages.conversation_id AND user_id = auth.uid())
 );
 
 -- Speaking Evaluations: Users can view own evaluations
+DROP POLICY IF EXISTS "Users can view own evaluations" ON public.speaking_evaluations;
 CREATE POLICY "Users can view own evaluations" ON public.speaking_evaluations FOR ALL USING (auth.uid() = user_id);
 
 -- User Progress: Users can view and update own progress
+DROP POLICY IF EXISTS "Users can manage own progress" ON public.user_progress;
 CREATE POLICY "Users can manage own progress" ON public.user_progress FOR ALL USING (auth.uid() = user_id);
 
 -- Vocabulary: Users can manage own vocabulary vault
+DROP POLICY IF EXISTS "Users can manage own vocabulary" ON public.vocabulary;
 CREATE POLICY "Users can manage own vocabulary" ON public.vocabulary FOR ALL USING (auth.uid() = user_id);
 
 -- Achievements: Users can manage own achievements
+DROP POLICY IF EXISTS "Users can manage own achievements" ON public.user_achievements;
 CREATE POLICY "Users can manage own achievements" ON public.user_achievements FOR ALL USING (auth.uid() = user_id);
 
 -- Learning Memory: Users can manage own memory entries
+DROP POLICY IF EXISTS "Users can manage own memory" ON public.learning_memory;
 CREATE POLICY "Users can manage own memory" ON public.learning_memory FOR ALL USING (auth.uid() = user_id);
 
 -- Daily Challenges: Users can manage own daily challenges
+DROP POLICY IF EXISTS "Users can manage own daily challenges" ON public.daily_challenges;
 CREATE POLICY "Users can manage own daily challenges" ON public.daily_challenges FOR ALL USING (auth.uid() = user_id);
 
 -- ==============================================================================
