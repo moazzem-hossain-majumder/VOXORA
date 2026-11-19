@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="100%" height="100%" style="background:#0A0C10;font-family:system-ui,-apple-system,sans-serif;">
+  <defs>
+    <linearGradient id="bgGlow" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#D4F82A" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#0A0C10" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="sphereGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#FAFF9E"/>
+      <stop offset="35%" stop-color="#D4F82A"/>
+      <stop offset="70%" stop-color="#6B9400"/>
+      <stop offset="100%" stop-color="#172400"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0A0C10"/>
+  <rect width="1200" height="300" fill="url(#bgGlow)"/>
+
+  <!-- Brand Header -->
+  <g transform="translate(60, 45)">
+    <rect width="36" height="36" rx="10" fill="#D4F82A"/>
+    <text x="18" y="25" font-size="20" font-weight="900" fill="#000" text-anchor="middle">V</text>
+    <text x="48" y="25" font-size="22" font-weight="900" fill="#FFF" letter-spacing="-0.5">VOXORA</text>
+    <circle cx="152" cy="18" r="4" fill="#D4F82A"/>
+    <text x="165" y="24" font-size="12" font-weight="600" fill="#8892B0" font-family="monospace">AI English Speaking Companion • Live Demo Workflow</text>
+  </g>
+
+  <!-- Central Audio Orb -->
+  <g transform="translate(600, 180)">
+    <!-- Outer Glow -->
+    <circle cx="0" cy="0" r="85" fill="#D4F82A" opacity="0.25" filter="url(#glow)"/>
+    <!-- Sphere -->
+    <circle cx="0" cy="0" r="70" fill="url(#sphereGrad)"/>
+    <!-- Inner Sheen -->
+    <circle cx="-20" cy="-20" r="35" fill="#FFF" opacity="0.3" filter="url(#glow)"/>
+    <!-- Waveform in sphere -->
+    <rect x="-24" y="-12" width="5" height="24" rx="2.5" fill="#000" opacity="0.8"/>
+    <rect x="-12" y="-22" width="5" height="44" rx="2.5" fill="#000" opacity="0.9"/>
+    <rect x="0" y="-30" width="5" height="60" rx="2.5" fill="#000"/>
+    <rect x="12" y="-18" width="5" height="36" rx="2.5" fill="#000" opacity="0.9"/>
+    <rect x="24" y="-8" width="5" height="16" rx="2.5" fill="#000" opacity="0.8"/>
+    <!-- Status pill -->
+    <rect x="-95" y="85" width="190" height="26" rx="13" fill="#141822" stroke="#253046"/>
+    <circle cx="-75" cy="98" r="4" fill="#D4F82A"/>
+    <text x="-62" y="102" font-size="10" font-weight="700" fill="#E2E8F0" font-family="monospace">ALEX IS SPEAKING • 1.0x</text>
+  </g>
+
+  <!-- Left: User Spoken Turn -->
+  <g transform="translate(60, 140)">
+    <rect width="400" height="150" rx="20" fill="#121620" stroke="#222B3D" stroke-width="1.5"/>
+    <text x="24" y="36" font-size="11" font-weight="700" fill="#38BDF8" font-family="monospace">01 • USER SPEECH (GROQ WHISPER ASR)</text>
+    <text x="24" y="68" font-size="15" font-weight="500" fill="#F1F5F9">"I really love classical music because</text>
+    <text x="24" y="92" font-size="15" font-weight="500" fill="#F1F5F9">it <tspan fill="#FB7185" font-weight="700">make</tspan> me feel peaceful."</text>
+    <rect x="24" y="112" width="180" height="20" rx="10" fill="#0D1117" stroke="#1E293B"/>
+    <text x="36" y="126" font-size="10" font-weight="600" fill="#94A3B8" font-family="monospace">Pacing: 0 fillers detected</text>
+  </g>
+
+  <!-- Right: Pedagogical Multi-Tier Feedback -->
+  <g transform="translate(740, 140)">
+    <rect width="400" height="150" rx="20" fill="#121620" stroke="#D4F82A" stroke-width="1.5" stroke-opacity="0.4"/>
+    <text x="24" y="36" font-size="11" font-weight="800" fill="#D4F82A" font-family="monospace">02 • INSTANT EVALUATION (8.8 / 10)</text>
+    <!-- Correction Box -->
+    <rect x="24" y="50" width="352" height="40" rx="10" fill="#0D1117" stroke="#263143"/>
+    <text x="36" y="66" font-size="11" font-weight="500" fill="#FB7185">Original: "it make me feel"</text>
+    <text x="36" y="82" font-size="11" font-weight="700" fill="#D4F82A">Correction: "it makes me feel" (Subject-verb)</text>
+    <!-- Target -->
+    <text x="24" y="112" font-size="11" font-weight="700" fill="#FFF">Next Target:</text>
+    <text x="100" y="112" font-size="11" font-weight="500" fill="#CBD5E1">Maintain 3rd-person singular 's'</text>
+    <text x="24" y="132" font-size="10" font-weight="600" fill="#38BDF8" font-family="monospace">Grammar: 8.5 • Fluency: 9.0 • Vocab: 8.0</text>
+  </g>
+
+  <!-- Bottom: 3-Tier Native Expression Showcase -->
+  <g transform="translate(60, 330)">
+    <rect width="1080" height="240" rx="24" fill="#0F131C" stroke="#1F2839" stroke-width="1.5"/>
+    <text x="32" y="38" font-size="12" font-weight="800" fill="#D4F82A" font-family="monospace" letter-spacing="1">03 • 3-WAY NATIVE EXPRESSION GENERATOR</text>
+
+    <!-- Card 1 -->
+    <g transform="translate(32, 60)">
+      <rect width="320" height="145" rx="16" fill="#141822" stroke="#202A3B"/>
+      <text x="20" y="30" font-size="11" font-weight="700" fill="#94A3B8" font-family="monospace">LEVEL 1 • GRAMMATICALLY ACCURATE</text>
+      <text x="20" y="60" font-size="13" font-weight="500" fill="#E2E8F0">"I really love listening to classical</text>
+      <text x="20" y="80" font-size="13" font-weight="500" fill="#E2E8F0">music because it makes me feel</text>
+      <text x="20" y="100" font-size="13" font-weight="500" fill="#E2E8F0">very peaceful and calm."</text>
+      <text x="20" y="130" font-size="10" font-weight="600" fill="#64748B" font-family="monospace">Foundational accuracy achieved</text>
+    </g>
+
+    <!-- Card 2 -->
+    <g transform="translate(380, 60)">
+      <rect width="320" height="145" rx="16" fill="#141822" stroke="#D4F82A" stroke-width="1.5" stroke-opacity="0.4"/>
+      <text x="20" y="30" font-size="11" font-weight="800" fill="#D4F82A" font-family="monospace">LEVEL 2 • NATURAL NATIVE IDIOM</text>
+      <text x="20" y="60" font-size="13" font-weight="600" fill="#FFF">"I really love classical music; it</text>
+      <text x="20" y="80" font-size="13" font-weight="600" fill="#FFF">always helps me <tspan fill="#D4F82A">unwind</tspan> and keeps</text>
+      <text x="20" y="100" font-size="13" font-weight="600" fill="#FFF">me feeling super zen."</text>
+      <text x="20" y="130" font-size="10" font-weight="600" fill="#D4F82A" font-family="monospace">+ Saved to Vocabulary Vault</text>
+    </g>
+
+    <!-- Card 3 -->
+    <g transform="translate(728, 60)">
+      <rect width="320" height="145" rx="16" fill="#141822" stroke="#A855F7" stroke-width="1.5" stroke-opacity="0.4"/>
+      <text x="20" y="30" font-size="11" font-weight="800" fill="#C084FC" font-family="monospace">LEVEL 3 • ELOQUENT &amp; ADVANCED (C2)</text>
+      <text x="20" y="60" font-size="13" font-weight="600" fill="#F8FAFC">"I find classical music incredibly</text>
+      <text x="20" y="80" font-size="13" font-weight="600" fill="#F8FAFC"><tspan fill="#C084FC">therapeutic</tspan>; it never fails to</text>
+      <text x="20" y="100" font-size="13" font-weight="600" fill="#F8FAFC">induce profound tranquility."</text>
+      <text x="20" y="130" font-size="10" font-weight="600" fill="#C084FC" font-family="monospace">High-impact executive expression</text>
+    </g>
+  </g>
+</svg>
