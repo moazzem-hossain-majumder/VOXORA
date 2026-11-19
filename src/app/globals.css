@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0A0C10;
+  --foreground: #F4F4F6;
+  --card: 222 18% 11%;
+  --card-foreground: 210 20% 98%;
+  --border: 220 15% 18%;
+  --muted: 220 14% 16%;
+  --muted-foreground: 220 10% 65%;
+  --brand: #D4F82A;
+  --brand-glow: rgba(212, 248, 42, 0.2);
+}
+
+.light {
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --border: 214 32% 91%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215 16% 47%;
+  --brand: #65A30D;
+  --brand-glow: rgba(101, 163, 13, 0.15);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0C10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #232A36;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #343E4F;
+}
+
+/* Smooth gradients and editorial glass */
+.bg-editorial-gradient {
+  background: radial-gradient(circle at 50% 0%, rgba(212, 248, 42, 0.08) 0%, rgba(10, 12, 16, 0) 70%),
+              linear-gradient(180deg, #0D0F14 0%, #0A0C10 100%);
+}
+
+.card-editorial {
+  background: #12151C;
+  border: 1px solid #1F2633;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-editorial:hover {
+  border-color: #2F3B4E;
+  transform: translateY(-2px);
+}
+
+.card-active {
+  background: #141822;
+  border: 1px solid rgba(212, 248, 42, 0.4);
+  box-shadow: 0 0 25px rgba(212, 248, 42, 0.08);
+}
+
+/* Audio visualization bar */
+.audio-bar {
+  width: 4px;
+  border-radius: 2px;
+  background-color: #D4F82A;
+  transition: height 0.08s ease;
+}
+
+/* Text glow */
+.text-brand-glow {
+  text-shadow: 0 0 20px rgba(212, 248, 42, 0.4);
+}
+
+/* Pulsing sphere gradient */
+.sphere-gradient {
+  background: radial-gradient(circle at 35% 35%, #FAFF9E 0%, #D4F82A 35%, #6B9400 70%, #172400 100%);
+  box-shadow: 0 0 60px rgba(212, 248, 42, 0.35), inset 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+.sphere-listening {
+  background: radial-gradient(circle at 35% 35%, #A5F3FC 0%, #38BDF8 40%, #0284C7 75%, #082F49 100%);
+  box-shadow: 0 0 60px rgba(56, 189, 248, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+.sphere-processing {
+  background: radial-gradient(circle at 35% 35%, #F5D0FE 0%, #C084FC 40%, #7E22CE 75%, #3B0764 100%);
+  box-shadow: 0 0 60px rgba(192, 132, 252, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.4);
+}
