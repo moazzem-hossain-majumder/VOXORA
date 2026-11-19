@@ -1,5 +1,6 @@
 -- ==============================================================================
--- VOXORA: Full Supabase PostgreSQL Schema & Security Policies
+-- VOXORA: 100% Idempotent Supabase Schema & Security Setup
+-- Safe to run repeatedly at any time without errors
 -- ==============================================================================
 
 -- 1. Profiles Table (extends Supabase auth.users)
@@ -127,7 +128,7 @@ CREATE TABLE IF NOT EXISTS public.daily_challenges (
 );
 
 -- ==============================================================================
--- INDEXES FOR HIGH QUERY PERFORMANCE
+-- INDEXES FOR HIGH QUERY PERFORMANCE (IF NOT EXISTS)
 -- ==============================================================================
 CREATE INDEX IF NOT EXISTS idx_conversations_user ON public.conversations(user_id);
 CREATE INDEX IF NOT EXISTS idx_messages_conversation ON public.conversation_messages(conversation_id);
@@ -136,7 +137,7 @@ CREATE INDEX IF NOT EXISTS idx_vocabulary_user ON public.vocabulary(user_id);
 CREATE INDEX IF NOT EXISTS idx_learning_memory_user ON public.learning_memory(user_id);
 
 -- ==============================================================================
--- ROW LEVEL SECURITY (RLS) POLICIES
+-- ROW LEVEL SECURITY (RLS)
 -- ==============================================================================
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.conversations ENABLE ROW LEVEL SECURITY;
@@ -148,7 +149,7 @@ ALTER TABLE public.user_achievements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.learning_memory ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.daily_challenges ENABLE ROW LEVEL SECURITY;
 
--- Profiles: Users can only read/update their own profile
+-- Profiles Policies
 DROP POLICY IF EXISTS "Users can view own profile" ON public.profiles;
 CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
 
@@ -158,37 +159,37 @@ CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING
 DROP POLICY IF EXISTS "Users can insert own profile" ON public.profiles;
 CREATE POLICY "Users can insert own profile" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
 
--- Conversations: Users can read/write their own conversations
+-- Conversations Policies
 DROP POLICY IF EXISTS "Users can manage own conversations" ON public.conversations;
 CREATE POLICY "Users can manage own conversations" ON public.conversations FOR ALL USING (auth.uid() = user_id);
 
--- Messages: Users can manage messages in their conversations
+-- Messages Policies
 DROP POLICY IF EXISTS "Users can manage messages" ON public.conversation_messages;
 CREATE POLICY "Users can manage messages" ON public.conversation_messages FOR ALL USING (
   EXISTS (SELECT 1 FROM public.conversations WHERE id = conversation_messages.conversation_id AND user_id = auth.uid())
 );
 
--- Speaking Evaluations: Users can view own evaluations
+-- Speaking Evaluations Policies
 DROP POLICY IF EXISTS "Users can view own evaluations" ON public.speaking_evaluations;
 CREATE POLICY "Users can view own evaluations" ON public.speaking_evaluations FOR ALL USING (auth.uid() = user_id);
 
--- User Progress: Users can view and update own progress
+-- User Progress Policies
 DROP POLICY IF EXISTS "Users can manage own progress" ON public.user_progress;
 CREATE POLICY "Users can manage own progress" ON public.user_progress FOR ALL USING (auth.uid() = user_id);
 
--- Vocabulary: Users can manage own vocabulary vault
+-- Vocabulary Policies
 DROP POLICY IF EXISTS "Users can manage own vocabulary" ON public.vocabulary;
 CREATE POLICY "Users can manage own vocabulary" ON public.vocabulary FOR ALL USING (auth.uid() = user_id);
 
--- Achievements: Users can manage own achievements
+-- Achievements Policies
 DROP POLICY IF EXISTS "Users can manage own achievements" ON public.user_achievements;
 CREATE POLICY "Users can manage own achievements" ON public.user_achievements FOR ALL USING (auth.uid() = user_id);
 
--- Learning Memory: Users can manage own memory entries
+-- Learning Memory Policies
 DROP POLICY IF EXISTS "Users can manage own memory" ON public.learning_memory;
 CREATE POLICY "Users can manage own memory" ON public.learning_memory FOR ALL USING (auth.uid() = user_id);
 
--- Daily Challenges: Users can manage own daily challenges
+-- Daily Challenges Policies
 DROP POLICY IF EXISTS "Users can manage own daily challenges" ON public.daily_challenges;
 CREATE POLICY "Users can manage own daily challenges" ON public.daily_challenges FOR ALL USING (auth.uid() = user_id);
 
