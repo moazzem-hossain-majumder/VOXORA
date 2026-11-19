@@ -28,7 +28,19 @@ An immersive, intelligent English-speaking companion platform combining the warm
 
 ---
 
-## 🎬 Live Conversation & Pedagogical Loop
+## 🎬 Full Interactive Platform Walkthrough (Demo)
+
+<div align="center">
+  <img src="public/screenshots/voxora-demo.gif" alt="VOXORA Full Platform Interactive Walkthrough Demo" width="100%" />
+</div>
+
+<p align="center">
+  <em>⚡ Continuous animated walkthrough of VOXORA: Live Speaking Arena, Scenario Simulator, Shadowing Studio, Vocabulary Vault, Voice Journal, and Diagnostics.</em>
+</p>
+
+---
+
+## 🔄 Real-Time Voice Pedagogical Architecture & Audio Loop
 
 <div align="center">
   <img src="public/screenshots/voxora-flow.svg" alt="VOXORA Live Workflow Demonstration" width="100%" />
