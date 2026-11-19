@@ -130,6 +130,7 @@ You MUST respond strictly with valid JSON conforming to the following structure:
   const response = await aiProviderManager.generate(messages, {
     jsonMode: true,
     temperature: 0.7,
+    maxTokens: 2500,
   });
 
   // Parse and validate JSON

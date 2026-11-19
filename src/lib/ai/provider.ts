@@ -40,49 +40,62 @@ class GroqProvider implements AIProvider {
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) throw new Error('Groq API key not configured');
 
-    const model = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+    const modelsToTry = [
+      process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
+      'openai/gpt-oss-120b',
+      'openai/gpt-oss-20b',
+    ];
 
-    const body: any = {
-      model,
-      messages,
-      temperature: options.temperature ?? 0.7,
-      max_tokens: options.maxTokens ?? 1024,
-    };
+    let lastError: any = null;
 
-    if (options.jsonMode) {
-      body.response_format = { type: 'json_object' };
-    }
+    for (const model of modelsToTry) {
+      const body: any = {
+        model,
+        messages,
+        temperature: options.temperature ?? 0.7,
+        max_tokens: options.maxTokens ?? 2048,
+      };
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 18000);
-
-    try {
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-        signal: controller.signal,
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`Groq API error (${res.status}): ${errorText}`);
+      if (options.jsonMode) {
+        body.response_format = { type: 'json_object' };
       }
 
-      const data = await res.json();
-      const content = data.choices?.[0]?.message?.content || '';
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 18000);
 
-      return {
-        content,
-        providerUsed: 'groq',
-        modelUsed: model,
-      };
-    } finally {
-      clearTimeout(timeout);
+      try {
+        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Groq API model [${model}] error (${res.status}): ${errorText}`);
+        }
+
+        const data = await res.json();
+        const content = data.choices?.[0]?.message?.content || '';
+
+        return {
+          content,
+          providerUsed: 'groq',
+          modelUsed: model,
+        };
+      } catch (err) {
+        lastError = err;
+        console.warn(`Groq model [${model}] failed, trying next:`, err);
+      } finally {
+        clearTimeout(timeout);
+      }
     }
+
+    throw lastError || new Error('All Groq models failed');
   }
 }
 
@@ -100,7 +113,11 @@ class GeminiProvider implements AIProvider {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) throw new Error('Gemini API key not configured');
 
-    const model = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+    const modelsToTry = [
+      process.env.GEMINI_MODEL || 'gemini-3.5-flash',
+      'gemini-3.1-flash-lite',
+      'gemini-2.5-flash',
+    ];
 
     // Format messages for Gemini API
     const systemMessage = messages.find(m => m.role === 'system')?.content || '';
@@ -111,53 +128,62 @@ class GeminiProvider implements AIProvider {
       parts: [{ text: m.content }]
     }));
 
-    const body: any = {
-      contents,
-      generationConfig: {
-        temperature: options.temperature ?? 0.7,
-        maxOutputTokens: options.maxTokens ?? 1024,
-      }
-    };
+    let lastError: any = null;
 
-    if (systemMessage) {
-      body.systemInstruction = {
-        parts: [{ text: systemMessage }]
+    for (const model of modelsToTry) {
+      const body: any = {
+        contents,
+        generationConfig: {
+          temperature: options.temperature ?? 0.7,
+          maxOutputTokens: options.maxTokens ?? 2048,
+        }
       };
-    }
 
-    if (options.jsonMode) {
-      body.generationConfig.responseMimeType = 'application/json';
-    }
-
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 18000);
-
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        signal: controller.signal,
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`Gemini API error (${res.status}): ${errorText}`);
+      if (systemMessage) {
+        body.systemInstruction = {
+          parts: [{ text: systemMessage }]
+        };
       }
 
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (options.jsonMode) {
+        body.generationConfig.responseMimeType = 'application/json';
+      }
 
-      return {
-        content: text,
-        providerUsed: 'gemini',
-        modelUsed: model,
-      };
-    } finally {
-      clearTimeout(timeout);
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 18000);
+
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Gemini API model [${model}] error (${res.status}): ${errorText}`);
+        }
+
+        const data = await res.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+        return {
+          content: text,
+          providerUsed: 'gemini',
+          modelUsed: model,
+        };
+      } catch (err) {
+        lastError = err;
+        console.warn(`Gemini model [${model}] failed, trying next:`, err);
+      } finally {
+        clearTimeout(timeout);
+      }
     }
+
+    throw lastError || new Error('All Gemini models failed');
   }
 }
 
